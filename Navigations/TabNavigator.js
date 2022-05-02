@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
 
+
 const Tab = createBottomTabNavigator();
 
 function TabNavigator() {
@@ -35,6 +36,7 @@ function TabNavigator() {
             component={ListStackScreen} 
         />
       </Tab.Navigator>
+    
     );
 }
 

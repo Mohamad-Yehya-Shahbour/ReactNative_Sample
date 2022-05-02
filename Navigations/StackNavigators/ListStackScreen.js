@@ -4,15 +4,17 @@ import ListDetailsScreen from '../../ListScreens/ListDetailsScreen';
 import React, {useState} from 'react';
 
 
-const ListStack = createNativeStackNavigator();
 
+const ListStack = createNativeStackNavigator();
+  
   
 function ListStackScreen() {
   return (
-    <ListStack.Navigator initialRouteName="ListItems" screenOptions={{headerShown: false}}>
+    <ListStack.Navigator initialRouteName="ListItems" screenOptions={{headerShown: false}} >
       <ListStack.Screen name="ListItems" component={ListScreen} />
       <ListStack.Screen name="ListItemDetails" component={ListDetailsScreen} />
     </ListStack.Navigator>
+    
   );
 }
 
