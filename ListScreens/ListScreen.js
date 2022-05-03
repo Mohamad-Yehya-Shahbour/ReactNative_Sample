@@ -1,72 +1,179 @@
-import { Button, Text, View , StyleSheet} from 'react-native';
+import {Button, Text, View, StyleSheet, FlatList, Linking} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {Dropdown} from 'react-native-element-dropdown';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
+function ListScreen({navigation}) {
+  const [data, setData] = useState();
+  const [filteredData, setFilteredData] = useState([]);
+  const [categArray, setCategArray] = useState([]);
+  const filteredArray = [];
+  const [selectedLanguage, setSelectedLanguage] = useState();
 
+  useEffect(() => {
+    let array = [];
+    let catArr = [];
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
 
+    fetch('https://api.publicapis.org/entries', requestOptions)
+      .then(response => response.json())
+      .then(responseJson => {
+        setData(responseJson);
+        responseJson.entries.map(entries => {
+          if (array.includes(entries.Category)) {
+          } else {
+            array.push(entries.Category);
+            let tempObj = {
+              label: entries.Category,
+              value: entries.Category,
+            };
 
-function ListScreen({ navigation }) {
+            catArr.push(tempObj);
+          }
+        });
 
-    const [data, setData] = useState();
-    const array = [];
-    const categArray = [];
-    
-    
+        console.log('array', catArr);
+        setCategArray(catArr);
+      })
+      .catch(error => console.warn('errorrrr', error));
+  }, []);
 
-    useEffect(() => {
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-            
-        fetch("https://api.publicapis.org/entries", requestOptions)
-        .then((response) => response.json())
-        .then((responseJson) => {
-            setData(responseJson);
-            for(let i=0; i<responseJson.entries.length; i++){
-                
-                if(array.includes(responseJson.entries[i].Category) == true){
-                    continue;
-                }else{
-                    array.push(responseJson.entries[i].Category);
-                    let tempObj = {};
-                    tempObj.value = responseJson.entries[i].Category;
-                    categArray.push(tempObj)
-                }
-                
-            }
-            console.warn('array', categArray.length);
-        })
-        .catch(error => console.warn('errorrrr', error));
+const filter = (value) => {
+    for(let i=0; i<data.entries.length; i++){
+        if(data.entries[i].Category == value){
+            filteredArray.push(data.entries[i]);
+    }
+    setFilteredData(filteredArray);
+    }
+};
 
-        
-    },[]);
-    
-    
-
+  const ItemView = ({item, index}) => {
     return (
-        <View style={styles.circle}>
-            <Text style={styles.text}>gellooo</Text>
-            <View style={{ height: 1, width: '100%', backgroundColor: '#C8C8C8',}} />
-        </View>
+      // Flat List Item
+      <View style={{flex: 1, alignItems: "flex-start", justifyContent: 'center'}}>
+        <Text style={styles.text}>{index+1}</Text>
+        
+        <Text style={styles.text}>{"Description: "}{item.Description}</Text>
+        
+        <Text style={styles.link} onPress={() => Linking.openURL(item.Link)}>{"Link: "}{item.Link}</Text>
+        
+        <Text style={styles.text}>{"Category: "}{item.Category}</Text>
+        
+      </View>
     );
+  };
+
+  const ItemSeparatorView = () => {
+    return (
+      // Flat List Item Separator
+      <View style={{height: 1, width: '100%', backgroundColor: '#C8C8C8'}} />
+    );
+  };
+
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
+
+  return (
+    <View style={styles.container}>
+      <Text style={[styles.label]}>select category</Text>
+
+      <Dropdown
+        style={[styles.dropdown]}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        search
+        data={categArray}
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        placeholder={!isFocus ? 'Select item' : '...'}
+        searchPlaceholder="Search..."
+        value={value}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={item => {
+          setValue(item.value);
+          setIsFocus(false);
+          filter(item.value);
+        }}
+        renderLeftIcon={() => (
+          <AntDesign
+            style={styles.icon}
+            color={'black'}
+            name="Safety"
+            size={20}
+          />
+        )}
+      />
+
+      <FlatList
+            data={filteredData}
+            keyExtractor={(item, index) => index}
+
+            ItemSeparatorComponent={ItemSeparatorView}
+            renderItem={ItemView}
+        />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    circle: {
-        padding: 8,
-        borderRadius: 50,
-        borderWidth: 1,
-        borderColor: 'black',
-        height: 35,
-        marginBottom: 10,
-        alignItems: 'center'
-    },
-    text: {
-        fontFamily: "CircularStd-Book",
-        fontSize: 14,
-        color: '#2f354b',
-        textAlign: 'center'
-    }
+  container: {
+    backgroundColor: 'white',
+    padding: 16,
+    flex: 1,
+  },
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+    color: 'black',
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: 'black',
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: 'black',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  text: {
+    fontSize: 15,
+    color: 'black',
+    marginBottom:4
+  },
+  link: {
+    fontSize: 15,
+    color: 'blue',
+    marginBottom:4
+  },
 });
 
 export default ListScreen;
