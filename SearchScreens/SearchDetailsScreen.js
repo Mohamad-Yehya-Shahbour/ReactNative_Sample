@@ -1,13 +1,43 @@
-import { Button, Text, View } from 'react-native';
-import React from 'react';
+import { Button, Text, View , SafeAreaView, ActivityIndicator, StyleSheet} from 'react-native';
+import React, {useFocusEffect, useState} from 'react';
+import { WebView } from 'react-native-webview';
 
 
-function SearchDetailsScreen() {
+function SearchDetailsScreen({route}) {
+  
+  const [loading, setLoading] = useState(true);
+
+
+ 
+  const {url} = route.params;
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:"black" }}>
-        <Text >Details!</Text>
-      </View>
+      <SafeAreaView style={styles.safeArea} >
+        <WebView
+          source={{  uri: url, }}
+          onLoad ={() => setLoading(false)}
+        />
+        {loading && (
+        <ActivityIndicator
+        style={{position: 'absolute',left: 0,right: 0,bottom: 0,top: 0,}}
+        size="large"
+        color={"black"}
+        />
+        )}
+      </SafeAreaView>
+      
     );
 }
+
+const styles = StyleSheet.create({
+  loading: {
+
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#234356'
+  },
+});
 
 export default SearchDetailsScreen;

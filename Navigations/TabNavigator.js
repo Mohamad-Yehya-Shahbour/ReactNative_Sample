@@ -15,11 +15,13 @@ function TabNavigator() {
         <Tab.Screen
             options={{
                 tabBarLabel:"Search",
-                tabBarIcon: ({color, size}) => (
+                tabBarLabelStyle:{color:"black"},
+                tabBarIcon: ({color,size}) => (
                     <FontAwesome name='search' 
-                    color={color} size={size} />
+                    color={"black"} size={size} />
                 ),
             }}
+            color="black"
             name="Search" 
             component={SearchStackScreen} 
         />
@@ -27,11 +29,13 @@ function TabNavigator() {
         <Tab.Screen
             options={{
                 tabBarLabel:"List",
+                tabBarLabelStyle:{color:"black"},
                 tabBarIcon: ({color, size}) => (
                     <FontAwesome name='list-ul'
-                    color={color} size={size} />
+                    color={"black"} size={size} />
                 ),
             }}
+            
             name="List"
             component={ListStackScreen} 
         />
