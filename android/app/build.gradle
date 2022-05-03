@@ -139,6 +139,13 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
+
+
+        //added for webview
+        //multiDexEnabled true
+
+
+
         applicationId "com.newproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
