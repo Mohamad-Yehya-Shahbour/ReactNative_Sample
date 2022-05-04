@@ -11,7 +11,9 @@ import TabNavigator from './Navigations/TabNavigator';
 const App = () => {
   return (
     <NavigationContainer >
+
       <TabNavigator/>   
+      
     </NavigationContainer>
   );
 };
