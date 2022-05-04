@@ -10,8 +10,8 @@ const ListStack = createNativeStackNavigator();
   
 function ListStackScreen() {
   return (
-    <ListStack.Navigator initialRouteName="Entries" >
-      <ListStack.Screen name="Entries" component={ListScreen} />
+    <ListStack.Navigator initialRouteName="Links" >
+      <ListStack.Screen name="Links" component={ListScreen} />
       <ListStack.Screen name="details" component={ListDetailsScreen} />
     </ListStack.Navigator>
     
