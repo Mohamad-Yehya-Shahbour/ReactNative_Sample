@@ -7,8 +7,6 @@ function SearchDetailsScreen({route}) {
   
   const [loading, setLoading] = useState(true);
 
-
- 
   const {url} = route.params;
     return (
       <SafeAreaView style={styles.safeArea} >

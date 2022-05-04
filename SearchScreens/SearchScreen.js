@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ScrollView, Pressable , FlatList, SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, Pressable , FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
 import { Searchbar, Button } from 'react-native-paper';
 import React, {useState, useEffect } from 'react';
 
@@ -8,23 +8,28 @@ function SearchScreen({ navigation }) {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [data, setData] = useState([]);
-    //const [filteredData, setFilteredData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError]= useState(false)
+
 
     const onChangeSearch = query => {
         setSearchQuery(query);}
 
     const api = () =>{
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-          };
+      var requestOptions = {
+          method: 'GET',
+          redirect: 'follow'
+        };
           
-          fetch(`http://universities.hipolabs.com/search?country=${searchQuery}`, requestOptions)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                setData(responseJson);
-              })
-            .catch(error => console.warn('error', error));
+      fetch(`http://universities.hipolabs.com/search?country=${searchQuery}`, requestOptions)
+        .then((response) => response.json())
+        .then((responseJson) => {
+            setData(responseJson);
+          })
+        .catch(error => {
+          console.warn('error', error);
+          setError(true);
+        });
     }
 
     const ItemView = ( {item} ) => {
@@ -32,7 +37,7 @@ function SearchScreen({ navigation }) {
           // Flat List Item
         <View style={{flex:1, alignItems:"center",justifyContent:"center"}} >
             <Pressable style={styles.button} onPress={() => navigation.navigate('SearchItemDetails', {
-                url: item.domains[0],
+                url: item.domains[0], title: item.name
             })}>
                 <Text style={styles.text}>{item.name}</Text>
             </Pressable>
@@ -57,33 +62,44 @@ function SearchScreen({ navigation }) {
             .then((response) => response.json())
             .then((responseJson) => {
                 setData(responseJson);
+                setLoading(false);
               })
             .catch(error => console.warn('error', error));
       },[]);
     
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <Searchbar
-                placeholder="Search"
-                onChangeText={onChangeSearch}
-                value={searchQuery}
-                onIconPress={api}
-            />
-            <FlatList
-                data={data}
-                keyExtractor={(item, index) => index}
 
-                ItemSeparatorComponent={ItemSeparatorView}
-                renderItem={ItemView}
-            />
-        </SafeAreaView>
+      <SafeAreaView style={{ flex: 1}}>
+          <Searchbar
+              placeholder="Search"
+              onChangeText={onChangeSearch}
+              value={searchQuery}
+              onIconPress={api}
+              style={{marginBottom:5}}
+          />
+
+          {loading && 
+            <ActivityIndicator
+            style={{position: 'absolute',left: 0,right: 0,bottom: 0,top: 0,}}
+            size="large"
+            color={"black"}
+          />}
+
+          { error && <Text style={{justifyContent:"center", alignSelf:"center", fontSize:"25",color:"black"}}>Page is not reachable, Please try again</Text>}
+          
+          <FlatList
+              data={data}
+              keyExtractor={(item, index) => index}
+              ItemSeparatorComponent={ItemSeparatorView}
+              renderItem={ItemView}
+          />
+
+      </SafeAreaView>
+
     );
 }
 
 const styles = StyleSheet.create({
-    circle: {
-      
-    },
     button: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -91,9 +107,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         borderRadius: 4,
         elevation: 3,
-        backgroundColor: 'black',
+        backgroundColor: '#002cb5',
         width:"80%",
-        marginVertical:7
+        marginVertical:10,
+        borderRadius: 10,
       },
       text: {
         fontSize: 16,

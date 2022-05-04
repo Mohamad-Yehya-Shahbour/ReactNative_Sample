@@ -34,8 +34,7 @@ function TabNavigator() {
                     <FontAwesome name='list-ul'
                     color={"black"} size={size} />
                 ),
-            }}
-            
+            }} 
             name="List"
             component={ListStackScreen} 
         />
