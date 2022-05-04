@@ -1,5 +1,5 @@
-import { Text, View, StyleSheet, ScrollView, Pressable , FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
-import { Searchbar, Button } from 'react-native-paper';
+import { Text, View, StyleSheet,Pressable , FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
+import { Searchbar} from 'react-native-paper';
 import React, {useState, useEffect } from 'react';
 
 
@@ -12,8 +12,7 @@ function SearchScreen({ navigation }) {
     const [error, setError]= useState(false)
 
 
-    const onChangeSearch = query => {
-        setSearchQuery(query);}
+    const onChangeSearch = query => {setSearchQuery(query);}
 
     const api = () =>{
       var requestOptions = {

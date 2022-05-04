@@ -1,8 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SearchScreen from '../../SearchScreens/SearchScreen';
 import SearchDetailsScreen from '../../SearchScreens/SearchDetailsScreen';
-import React, {useState} from 'react';
-import { Title } from 'react-native-paper';
+import React from 'react';
 
 
 
@@ -14,8 +13,7 @@ function SearchStackScreen() {
             <SearchStack.Screen name="SearchItemDetails" component={SearchDetailsScreen}
                 options= {({route}) => ({title: route.params.title, headerTitleAlign:"center"})} 
             />
-        </SearchStack.Navigator>
-        
+        </SearchStack.Navigator>  
     );
 }
 

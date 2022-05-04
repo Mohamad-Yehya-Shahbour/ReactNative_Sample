@@ -1,4 +1,4 @@
-import {Button, Text, View, StyleSheet, FlatList, Linking, SafeAreaView, ActivityIndicator} from 'react-native';
+import {Text, View, StyleSheet, FlatList, Linking, SafeAreaView, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Dropdown} from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
