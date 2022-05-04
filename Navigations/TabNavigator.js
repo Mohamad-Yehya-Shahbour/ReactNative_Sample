@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 function TabNavigator() {
     return (
 
-      <Tab.Navigator initialRouteName="Search" screenOptions={{headerShown: false}}>
+      <Tab.Navigator initialRouteName="Search" screenOptions={{ headerShown: false }}>
           
         <Tab.Screen
             options={{

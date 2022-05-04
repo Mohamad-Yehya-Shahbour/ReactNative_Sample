@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 16, 
     flex:1
+    
   },
   dropdown: {
     height: 50,

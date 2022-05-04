@@ -11,7 +11,6 @@ function SearchScreen({ navigation }) {
     const [loading, setLoading] = useState(true);
     const [error, setError]= useState(false)
 
-
     const onChangeSearch = query => {setSearchQuery(query);}
 
     const api = () =>{
