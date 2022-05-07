@@ -1,10 +1,10 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import ListScreen from '../../ListScreens/ListScreen';
 import ListDetailsScreen from '../../ListScreens/ListDetailsScreen';
 import React  from 'react';
 
 
-const ListStack = createNativeStackNavigator();
+const ListStack = createStackNavigator();
   
 function ListStackScreen() {
   return (
