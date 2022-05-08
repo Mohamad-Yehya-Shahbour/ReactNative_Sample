@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 function TabNavigator() {
     return (
 
-      <Tab.Navigator initialRouteName="Search" screenOptions={{ headerShown: false }}>
+      <Tab.Navigator initialRouteName="Search" screenOptions={{ headerShown: false }} >
           
         <Tab.Screen
             options={{
@@ -20,6 +20,7 @@ function TabNavigator() {
                     <FontAwesome name='search' 
                     color={"black"} size={size} />
                 ),
+                tabBarActiveBackgroundColor:"#cdcfd1"
             }}
             color="black"
             name="Search" 
@@ -34,6 +35,7 @@ function TabNavigator() {
                     <FontAwesome name='list-ul'
                     color={"black"} size={size} />
                 ),
+                tabBarActiveBackgroundColor:"#cdcfd1"
             }} 
             name="List"
             component={ListStackScreen} 
