@@ -11,7 +11,7 @@ const SearchStack = createStackNavigator();
 const config = {
     animation: 'timing',
     config: {
-        duration: 1000,
+        duration: 750,
     },
 };
 

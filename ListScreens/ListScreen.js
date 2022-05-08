@@ -1,4 +1,4 @@
-import {Text, View, StyleSheet, FlatList, Linking, SafeAreaView, ActivityIndicator} from 'react-native';
+import {Text, View, StyleSheet, FlatList, Linking, SafeAreaView, ActivityIndicator, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Dropdown} from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -6,7 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 function ListScreen({navigation}) {
 
   const [data, setData] = useState();
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState(null);
   const [categArray, setCategArray] = useState([]);
   const filteredArray = [];
   const [error, setError]= useState(false)
@@ -61,9 +61,12 @@ const filter = (value) => {
   const ItemView = ({item, index}) => {
     return (
       // Flat List Item
-      <View style={styles.itemview}>
-        <Text style={styles.text} onPress={() => Linking.openURL(item.Link)}> {index+1}{". "}{item.Description}</Text>
-      </View>
+      <TouchableOpacity underlayColor="green" onPress={() => Linking.openURL(item.Link)}>
+        <View style={styles.itemview}>
+          <Text style={styles.text} > {index+1}{". "}{item.Description} </Text>
+        </View>
+      </TouchableOpacity>
+      
     );
   };
 
@@ -78,7 +81,7 @@ const filter = (value) => {
 
   return (
       <SafeAreaView style={styles.container}>
-            <Text style={[styles.label]}>Select Category</Text>
+            <Text style={[styles.label]}></Text>
             <Dropdown
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
@@ -109,31 +112,40 @@ const filter = (value) => {
                 />
                 )}
             />
+
+        {filteredData? 
+          (<FlatList
+            data={filteredData}
+            keyExtractor={(item, index) => index}
+            ItemSeparatorComponent={ItemSeparatorView}
+            renderItem={ItemView}
+          />
+          ) : 
+            <View>
+              <Text style={styles.info2}>Pleasr select the category of the links  </Text>
+              <Text style={styles.info2}>you are looking for...</Text>
+            </View> 
+        }
             
             { error && <Text style={{justifyContent:"center", alignSelf:"center", fontSize:"25",color:"black"}}>Page is not reachable, Please try again</Text>}
 
             {loading && 
-            <ActivityIndicator
-              style={{position: 'absolute',left: 0,right: 0,bottom: 0,top: 0,}}
-              size="large"
-              color={"black"}
-            />}
-            <FlatList
-              data={filteredData}
-              keyExtractor={(item, index) => index}
-              ItemSeparatorComponent={ItemSeparatorView}
-              renderItem={ItemView}
-            />
+              <ActivityIndicator
+                style={{position: 'absolute',left: 0,right: 0,bottom: 0,top: 0,}}
+                size="large"
+                color={"black"}
+              />
+            }
+            
       </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
-    padding: 16, 
+    padding: 15, 
+    paddingBottom:0,
     flex:1
-    
   },
   dropdown: {
     height: 50,
@@ -141,13 +153,14 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
+    backgroundColor:"white",
+    color:"black"
   },
   icon: {
     marginRight: 5,
   },
   label: {
     position: 'absolute',
-    backgroundColor: 'white',
     left: 22,
     top: 8,
     zIndex: 999,
@@ -207,6 +220,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  info2: {
+    fontSize: 13,
+    color: 'black',
+    justifyContent:"center",
+    alignSelf:"center",
+    marginTop:5
   },
 });
 

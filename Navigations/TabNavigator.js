@@ -18,7 +18,8 @@ function TabNavigator() {
                 tabBarLabelStyle:{color:"black"},
                 tabBarIcon: ({color,size}) => (
                     <FontAwesome name='search' 
-                    color={"black"} size={size} />
+                    color={"black"} size={size}
+                     />
                 ),
                 tabBarActiveBackgroundColor:"#cdcfd1"
             }}
@@ -40,6 +41,7 @@ function TabNavigator() {
             name="List"
             component={ListStackScreen} 
         />
+        
       </Tab.Navigator>
 
     );

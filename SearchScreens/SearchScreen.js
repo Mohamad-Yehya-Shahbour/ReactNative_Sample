@@ -7,22 +7,28 @@ import React, {useState, useEffect } from 'react';
 function SearchScreen({ navigation }) {
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [error, setError]= useState(false)
-
-    const onChangeSearch = query => {setSearchQuery(query);}
+    
+    const onChangeSearch = query => {
+      setSearchQuery(query);
+      if(query == ""){
+        setData(null);
+      }
+    }
 
     const api = () =>{
       var requestOptions = {
           method: 'GET',
           redirect: 'follow'
         };
-          
+      setLoading(true);
       fetch(`http://universities.hipolabs.com/search?country=${searchQuery}`, requestOptions)
         .then((response) => response.json())
         .then((responseJson) => {
             setData(responseJson);
+            setLoading(false);
           })
         .catch(error => {
           console.warn('error', error);
@@ -46,24 +52,9 @@ function SearchScreen({ navigation }) {
       const ItemSeparatorView = () => {
         return (
           // Flat List Item Separator
-          <View style={{ height: 1, width: '100%', backgroundColor: '#C8C8C8',}} />
+          <View style={{ height: 1, width: '80%', backgroundColor: '#C8C8C8', justifyContent:"center", alignSelf:"center"}} />
         );
       };
-
-    useEffect(() => {
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-          };
-          
-          fetch("http://universities.hipolabs.com/search", requestOptions)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                setData(responseJson);
-                setLoading(false);
-              })
-            .catch(error => console.warn('error', error));
-      },[]);
     
     return (
 
@@ -73,8 +64,23 @@ function SearchScreen({ navigation }) {
               onChangeText={onChangeSearch}
               value={searchQuery}
               onIconPress={api}
-              style={{marginBottom:5}}
+              style={{marginBottom:5, marginTop:1}}
           />
+          {data? 
+          (<FlatList
+              data={data}
+              keyExtractor={(item, index) => index}
+              ItemSeparatorComponent={ItemSeparatorView}
+              renderItem={ItemView}
+            />
+          ) : 
+            <View>
+              <Text style={styles.info}>Write the Country where you want to search universities. </Text>
+              <Text style={styles.info}>example: "Lebanon", "Egypt", "France"</Text>
+            </View> 
+          }
+          
+          
 
           {loading && 
             <ActivityIndicator
@@ -85,12 +91,7 @@ function SearchScreen({ navigation }) {
 
           { error && <Text style={{justifyContent:"center", alignSelf:"center", fontSize:"25",color:"black"}}>Page is not reachable, Please try again</Text>}
           
-          <FlatList
-              data={data}
-              keyExtractor={(item, index) => index}
-              ItemSeparatorComponent={ItemSeparatorView}
-              renderItem={ItemView}
-          />
+          
 
       </SafeAreaView>
 
@@ -104,11 +105,18 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         paddingHorizontal: 12,
         borderRadius: 4,
-        elevation: 3,
-        backgroundColor: '#002cb5',
-        width:"80%",
-        marginVertical:10,
+        backgroundColor: '#1e36e8',
+        width:"90%",
+        marginVertical:15,
         borderRadius: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
       },
       text: {
         fontSize: 16,
@@ -116,6 +124,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         letterSpacing: 0.25,
         color: 'white',
+      },
+      info: {
+        fontSize: 12,
+        color: 'black',
+        justifyContent:"center",
+        alignSelf:"center"
       },
 });
 
