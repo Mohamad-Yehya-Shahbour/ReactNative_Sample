@@ -61,7 +61,7 @@ const filter = (value) => {
   const ItemView = ({item, index}) => {
     return (
       // Flat List Item
-      <TouchableOpacity underlayColor="green" onPress={() => Linking.openURL(item.Link)}>
+      <TouchableOpacity onPress={() => Linking.openURL(item.Link)}>
         <View style={styles.itemview}>
           <Text style={styles.text} > {index+1}{". "}{item.Description} </Text>
         </View>
