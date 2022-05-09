@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet,Pressable , FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
+import { Text, View, StyleSheet,Pressable , FlatList, SafeAreaView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { Searchbar} from 'react-native-paper';
 import React, {useState, useEffect } from 'react';
 
@@ -40,11 +40,11 @@ function SearchScreen({ navigation }) {
         return (
           // Flat List Item
         <View style={{flex:1, alignItems:"center",justifyContent:"center"}} >
-            <Pressable style={styles.button} onPress={() => navigation.navigate('SearchItemDetails', {
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SearchItemDetails', {
                 url: item.domains[0], title: item.name
             })}>
                 <Text style={styles.text}>{item.name}</Text>
-            </Pressable>
+            </TouchableOpacity>
         </View>
         );
       };
@@ -75,8 +75,9 @@ function SearchScreen({ navigation }) {
             />
           ) : 
             <View>
-              <Text style={styles.info}>Write the Country where you want to search universities. </Text>
-              <Text style={styles.info}>example: "Lebanon", "Egypt", "France"</Text>
+              <Text style={styles.info}>Type the country name where you want to </Text>
+              <Text style={styles.info}>search for a university.</Text>
+              <Text style={styles.info}>example: "Lebanon", "Egypt", "France"...</Text>
             </View> 
           }
           
